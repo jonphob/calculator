@@ -52,6 +52,7 @@ body {
 }
 
 .display {
+  background-color: gray;
   width: 650px;
   height: 200px;
   position: relative;
@@ -118,13 +119,13 @@ body {
   background-color: rgb(160, 115, 40, 1);
 }
 
-.operand span,
-.special span {
-  margin-top: -1rem;
+.operand,
+.special {
+  padding-bottom: 14px;
 }
 
-.percent span {
-  margin-top: 0;
+.percent {
+  padding-bottom: 6px;
 }
 
 .zero {
