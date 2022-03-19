@@ -4,44 +4,73 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 const keys = document.querySelectorAll(".keys");
-const display = document.querySelector(".display p");
-let displayData;
-
-let total;
+const display = document.querySelector(".mainDisplay");
+const secondaryDisplay = document.querySelector(".secondaryDisplay");
+let firstNumber;
+let secondNumber;
+let operand;
+let result;
 
 const operate = (operator, a, b) => {
-  total = operator(a, b);
-  return total;
+  result = operator(a, b);
+  return result;
 };
 
-console.log(operate(add, 3, 2));
+console.log(operate(multiply, 4, 5));
 
-const logClick = (e) => {
+const getClick = (e) => {
+  console.log(e);
   let btnType = e.target.getAttribute("data-type");
   let btnValue = e.target.getAttribute("data-value");
+  let operandSymbol = e.target.innerText;
+
+  if (btnValue === "cancel") {
+    console.log(`${btnType} ${btnValue} clicked`);
+    clearAll();
+    console.log("display cleared");
+  }
+
+  //if button is operand
 
   if (btnType === "operand") {
-    if (btnValue === "cancel") {
-      console.log(`${btnType} ${btnValue} clicked`);
+    operand = btnValue;
+
+    if (firstNumber && !secondNumber) {
+      firstNumber = parseInt(firstNumber);
+      console.log(
+        `Typeof: ${typeof firstNumber}, Stored Value is ${firstNumber}, Operand is ${operand}`
+      );
+      secondaryDisplay.innerText = `${firstNumber} ${operandSymbol}`;
       clearDisplay();
-      console.log("display cleared");
-    } else {
-      console.log(`${btnType} ${btnValue} clicked`);
+
+      display.innerText = 0;
+    }
+
+    if (firstNumber && secondNumber) {
+      console.log(
+        `Stored value is ${secondNumber}, Display Value is ${firstNumber}, Operand Value is ${btnValue}`
+      );
+      if (btnValue === "multiply" || btnValue === "equals") {
+        console.log(operate(multiply, firstNumber, secondNumber));
+        display.innerText = operate(multiply, firstNumber, secondNumber);
+      }
     }
   }
+
+  // if button is number
+
   if (btnType === "number") {
-    console.log(`${btnType} ${btnValue} clicked`);
-    if (!displayData) {
-      displayData = btnValue;
+    if (!firstNumber) {
+      firstNumber = btnValue;
     } else {
-      displayData += btnValue;
+      firstNumber += btnValue;
     }
-    display.innerText = displayData;
-    // console.log(`Display Data: ${displayData}`);
+    console.log(`Current Value is ${parseInt(firstNumber)}`);
+    display.innerText = firstNumber;
   }
 };
 
-//adds event listeners to all calculator bns
+//adds event listeners to all calculator btns
 const addEventListenerList = (list, event, fn) => {
   for (var i = 0, len = list.length; i < len; i++) {
     list[i].addEventListener(event, fn, false);
@@ -50,7 +79,19 @@ const addEventListenerList = (list, event, fn) => {
 
 //Clear Display
 const clearDisplay = () => {
-  display.innerText = "";
+  display.innerText = "0";
+  operand = null;
+  firstNumber = 0;
 };
 
-addEventListenerList(keys, "click", logClick);
+const clearAll = () => {
+  display.innerText = "0";
+  secondaryDisplay.innerText = "";
+  firstNumber = 0;
+  secondNumber = 0;
+  operand = null;
+
+  result = 0;
+};
+
+addEventListenerList(keys, "click", getClick);
