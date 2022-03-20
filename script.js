@@ -11,6 +11,7 @@ const secondaryDisplay = document.querySelector(".secondaryDisplay");
 const cancelBtn = document.querySelector("[data-cancel]");
 const percent = document.querySelector("[data-percent]");
 const plusMinus = document.querySelector("[data-plus_minus]");
+const decimal = document.querySelector("[data-decimal]");
 
 let displayNumber = "";
 let firstNumber;
@@ -32,8 +33,6 @@ const appendDisplay = (number) => {
 
 const getNumber = (e) => {
   minusSign ? (minusSign = false) : null;
-  console.log(minusSign);
-
   let value = e.target.getAttribute("data-number");
   appendDisplay(value);
 };
@@ -49,6 +48,7 @@ const getOperand = (e) => {
 };
 
 const getEquals = () => {
+  console.log(result);
   console.log("Equals clicked");
   secondNumber = parseFloat(displayNumber);
   console.log(`Second Number = ${secondNumber}`);
@@ -107,6 +107,15 @@ const addPlusMinus = () => {
   }
 };
 
+const addDecimal = () => {
+  if (displayNumber) {
+    displayNumber = displayNumber + ".";
+  } else {
+    displayNumber = "0.";
+  }
+  display.innerText = displayNumber;
+};
+
 const operate = (operator, a, b) => {
   switch (operator) {
     case "add":
@@ -127,7 +136,7 @@ const operate = (operator, a, b) => {
   }
 };
 
-equals.addEventListener("click", getEquals);
+//** Event Listeners **/
 
 numbers.forEach((button) => {
   button.addEventListener("click", getNumber);
@@ -137,8 +146,8 @@ operands.forEach((button) => {
   button.addEventListener("click", getOperand);
 });
 
+equals.addEventListener("click", getEquals);
 cancelBtn.addEventListener("click", clearDisplay);
-
 percent.addEventListener("click", calcPercent);
-
 plusMinus.addEventListener("click", addPlusMinus);
+decimal.addEventListener("click", addDecimal);
