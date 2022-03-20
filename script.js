@@ -4,7 +4,6 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 const numbers = document.querySelectorAll("[data-number]");
-const numbersArray = Array.from(numbers);
 const operands = document.querySelectorAll("[data-operand]");
 const equals = document.querySelector("[data-equals]");
 const display = document.querySelector(".mainDisplay");
@@ -13,6 +12,8 @@ const cancelBtn = document.querySelector("[data-cancel]");
 const percent = document.querySelector("[data-percent]");
 const plusMinus = document.querySelector("[data-plus_minus]");
 const decimal = document.querySelector("[data-decimal]");
+const numbersArray = Array.from(numbers);
+const operandsArray = Array.from(operands);
 const keyArray = [
   "1",
   "2",
@@ -35,14 +36,14 @@ const keyArray = [
   "±",
   "Enter",
 ];
-console.log(numbersArray);
+console.log(operandsArray);
 let displayNumber = "";
 let firstNumber;
 let secondNumber;
 let operand;
 let result;
 let minusSign = false;
-let equalsPressed = false;
+let equalsPressed = true;
 
 const appendDisplay = (number) => {
   if (displayNumber.length == 0) {
@@ -51,6 +52,12 @@ const appendDisplay = (number) => {
   } else {
     displayNumber += number;
     display.innerText = displayNumber;
+  }
+  if (displayNumber.length > 11) {
+    display.style.fontSize = "4.5rem";
+  }
+  if (displayNumber.length > 14) {
+    display.style.fontSize = "2.5rem";
   }
 };
 
@@ -182,6 +189,13 @@ const operate = (operator, a, b) => {
   }
 };
 
+const addActiveToOperand = (index) => {
+  operandsArray[index].classList.add("active");
+  setTimeout(() => {
+    operandsArray[index].classList.remove("active");
+  }, 200);
+};
+
 //** Event Listeners **/
 
 numbers.forEach((button) => {
@@ -219,15 +233,19 @@ const keyCodes = () => {
         switch (e.key) {
           case "+":
             getOperand("add", true);
+            addActiveToOperand(3);
             break;
           case "-":
             getOperand("subtract", true);
+            addActiveToOperand(2);
             break;
           case "*":
             getOperand("multiply", true);
+            addActiveToOperand(1);
             break;
           case "/":
             getOperand("divide", true);
+            addActiveToOperand(0);
             break;
           case "Enter":
             getEquals("getEquals");
