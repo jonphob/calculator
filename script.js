@@ -8,14 +8,14 @@ const operands = document.querySelectorAll("[data-operand]");
 const equals = document.querySelector("[data-equals]");
 const display = document.querySelector(".mainDisplay");
 const secondaryDisplay = document.querySelector(".secondaryDisplay");
+const cancelBtn = document.querySelector("[data-cancel]");
+const percentBtn = document.querySelector("[data-percent]");
 
 let displayNumber = "";
 let firstNumber;
 let secondNumber;
 let operandSet = false;
 let operand;
-
-console.log(displayNumber.length);
 
 const appendDisplay = (number) => {
   if (displayNumber.length == 0) {
@@ -35,7 +35,7 @@ const getNumber = (e) => {
 const getOperand = (e) => {
   operand = e.target.getAttribute("data-operand");
   if (!firstNumber) {
-    firstNumber = displayNumber;
+    firstNumber = parseInt(displayNumber);
     console.log(`First Number = ${firstNumber}`);
   }
   operandSet = true;
@@ -46,11 +46,42 @@ const getOperand = (e) => {
 
 const getEquals = () => {
   console.log("Equals clicked");
-  secondNumber = displayNumber;
+  secondNumber = parseInt(displayNumber);
   console.log(`Second Number = ${secondNumber}`);
   result = operate(operand, firstNumber, secondNumber);
+  result = Math.round((result + Number.EPSILON) * 1000000000) / 1000000000;
   displayNumber = "";
   appendDisplay(result);
+  displayNumber = "";
+  firstNumber = null;
+  secondNumber = null;
+};
+
+const clearDisplay = () => {
+  displayNumber = "";
+  firstNumber = null;
+  secondNumber = null;
+  display.innerText = "0";
+};
+
+const operate = (operator, a, b) => {
+  switch (operator) {
+    case "add":
+      return add(a, b);
+    case "subtract":
+      return subtract(a, b);
+    case "multiply":
+      return multiply(a, b);
+    case "divide":
+      if (b === 0) {
+        return "Really??";
+      } else {
+        return divide(a, b);
+      }
+
+    default:
+      break;
+  }
 };
 
 equals.addEventListener("click", getEquals);
@@ -63,20 +94,6 @@ operands.forEach((button) => {
   button.addEventListener("click", getOperand);
 });
 
-const operate = (operator, a, b) => {
-  switch (operator) {
-    case "add":
-      return add(a, b);
-    case "subtract":
-      return subtract(a, b);
-    case "multiply":
-      return multiply(a, b);
-    case "divide":
-      return divide(a, b);
+cancelBtn.addEventListener("click", clearDisplay);
 
-    default:
-      break;
-  }
-};
-
-equals.addEventListener("click", operate(operand, firstNumber, secondNumber));
+percentBtn.addEventListener("click", calcPercent);
