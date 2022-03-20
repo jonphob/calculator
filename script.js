@@ -48,7 +48,13 @@ const getEquals = () => {
   secondNumber = parseFloat(displayNumber);
   console.log(`Second Number = ${secondNumber}`);
   result = operate(operand, firstNumber, secondNumber);
-  result = Math.round((result + Number.EPSILON) * 1000000000) / 1000000000;
+
+  if (typeof result === "string") {
+    result = result;
+  } else {
+    result = Math.round((result + Number.EPSILON) * 1000000000) / 1000000000;
+  }
+
   displayNumber = "";
   appendDisplay(result);
   displayNumber = "";
