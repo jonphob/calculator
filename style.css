@@ -37,7 +37,7 @@ body {
 
 .container {
   max-width: 800px;
-  margin: 5rem auto;
+  margin: 0 auto;
 }
 
 .calculator {
@@ -48,11 +48,10 @@ body {
   background-color: black;
   border-radius: 70px;
   justify-content: center;
-  border: #303030 1px solid;
 }
 
 .display {
-  background-color: gray;
+  /* background-color: gray; */
   width: 650px;
   height: 200px;
   position: relative;
