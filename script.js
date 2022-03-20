@@ -45,6 +45,7 @@ const getOperand = (e) => {
   }
   displayNumber = "";
   console.log(operand);
+  enableDecimal();
 };
 
 const getEquals = () => {
@@ -65,6 +66,7 @@ const getEquals = () => {
   displayNumber = "";
   firstNumber = null;
   secondNumber = null;
+  enableDecimal();
 };
 
 const clearDisplay = () => {
@@ -114,6 +116,13 @@ const addDecimal = () => {
     displayNumber = "0.";
   }
   display.innerText = displayNumber;
+  decimal.removeEventListener("click", addDecimal);
+  decimal.classList.add("disabled");
+};
+
+const enableDecimal = () => {
+  decimal.addEventListener("click", addDecimal);
+  decimal.classList.remove("disabled");
 };
 
 const operate = (operator, a, b) => {
