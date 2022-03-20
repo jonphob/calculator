@@ -74,10 +74,8 @@ const getOperand = (e, d = false) => {
   }
   if (!firstNumber) {
     firstNumber = parseFloat(displayNumber);
-    console.log(`First Number = ${firstNumber}`);
   }
   displayNumber = "";
-  console.log(operand);
   enableDecimal();
 };
 
@@ -85,9 +83,7 @@ const getEquals = () => {
   if (equalsPressed) {
     return null;
   }
-  console.log("Equals clicked");
   secondNumber = parseFloat(displayNumber);
-  console.log(`Second Number = ${secondNumber}`);
   result = operate(operand, firstNumber, secondNumber);
 
   if (typeof result === "string") {
@@ -141,7 +137,6 @@ const addPlusMinus = () => {
     displayNumber = "-" + displayNumber;
     display.innerText = displayNumber;
     minusSign = true;
-    console.log(minusSign);
   }
 };
 
@@ -207,15 +202,11 @@ const keyCodes = () => {
     //console.log(e);
     if (keyArray.includes(e.key)) {
       const key = isFinite(e.key);
-      console.log("Key is a number:" + key);
 
       if (key) {
-        console.log(`Key is a number:${key} - ${e.key} ${typeof e.key}`);
         let keyValue = e.key;
-        console.log(`Key is a number:${key} - ${e.key} ${typeof keyValue}`);
         getNumber(keyValue, true);
       } else {
-        console.log(`Key is NOT a number:${key}-${e.key}`);
         switch (e.key) {
           case "+":
             getOperand("add", true);
