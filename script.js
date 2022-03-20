@@ -3,95 +3,80 @@ const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
-const keys = document.querySelectorAll(".keys");
+const numbers = document.querySelectorAll("[data-number]");
+const operands = document.querySelectorAll("[data-operand]");
+const equals = document.querySelector("[data-equals]");
 const display = document.querySelector(".mainDisplay");
 const secondaryDisplay = document.querySelector(".secondaryDisplay");
+
+let displayNumber = "";
 let firstNumber;
 let secondNumber;
+let operandSet = false;
 let operand;
-let result;
+
+console.log(displayNumber.length);
+
+const appendDisplay = (number) => {
+  if (displayNumber.length == 0) {
+    displayNumber = number;
+    display.innerText = displayNumber;
+  } else {
+    displayNumber += number;
+    display.innerText = displayNumber;
+  }
+};
+
+const getNumber = (e) => {
+  let value = e.target.getAttribute("data-number");
+  appendDisplay(value);
+};
+
+const getOperand = (e) => {
+  operand = e.target.getAttribute("data-operand");
+  if (!firstNumber) {
+    firstNumber = displayNumber;
+    console.log(`First Number = ${firstNumber}`);
+  }
+  operandSet = true;
+  displayNumber = "";
+
+  console.log(operand);
+};
+
+const getEquals = () => {
+  console.log("Equals clicked");
+  secondNumber = displayNumber;
+  console.log(`Second Number = ${secondNumber}`);
+  result = operate(operand, firstNumber, secondNumber);
+  displayNumber = "";
+  appendDisplay(result);
+};
+
+equals.addEventListener("click", getEquals);
+
+numbers.forEach((button) => {
+  button.addEventListener("click", getNumber);
+});
+
+operands.forEach((button) => {
+  button.addEventListener("click", getOperand);
+});
 
 const operate = (operator, a, b) => {
-  result = operator(a, b);
-  return result;
-};
+  switch (operator) {
+    case "add":
+      return add(a, b);
+    case "subtract":
+      return subtract(a, b);
+    case "multiply":
+      return multiply(a, b);
+    case "divide":
+      return divide(a, b);
 
-console.log(operate(multiply, 4, 5));
-
-const getClick = (e) => {
-  console.log(e);
-  let btnType = e.target.getAttribute("data-type");
-  let btnValue = e.target.getAttribute("data-value");
-  let operandSymbol = e.target.innerText;
-
-  if (btnValue === "cancel") {
-    console.log(`${btnType} ${btnValue} clicked`);
-    clearAll();
-    console.log("display cleared");
-  }
-
-  //if button is operand
-
-  if (btnType === "operand") {
-    operand = btnValue;
-
-    if (firstNumber && !secondNumber) {
-      firstNumber = parseInt(firstNumber);
-      console.log(
-        `Typeof: ${typeof firstNumber}, Stored Value is ${firstNumber}, Operand is ${operand}`
-      );
-      secondaryDisplay.innerText = `${firstNumber} ${operandSymbol}`;
-      clearDisplay();
-
-      display.innerText = 0;
-    }
-
-    if (firstNumber && secondNumber) {
-      console.log(
-        `Stored value is ${secondNumber}, Display Value is ${firstNumber}, Operand Value is ${btnValue}`
-      );
-      if (btnValue === "multiply" || btnValue === "equals") {
-        console.log(operate(multiply, firstNumber, secondNumber));
-        display.innerText = operate(multiply, firstNumber, secondNumber);
-      }
-    }
-  }
-
-  // if button is number
-
-  if (btnType === "number") {
-    if (!firstNumber) {
-      firstNumber = btnValue;
-    } else {
-      firstNumber += btnValue;
-    }
-    console.log(`Current Value is ${parseInt(firstNumber)}`);
-    display.innerText = firstNumber;
+    default:
+      break;
   }
 };
 
-//adds event listeners to all calculator btns
-const addEventListenerList = (list, event, fn) => {
-  for (var i = 0, len = list.length; i < len; i++) {
-    list[i].addEventListener(event, fn, false);
-  }
-};
-
-//Clear Display
-const clearDisplay = () => {
-  display.innerText = "0";
-  operand = null;
-  firstNumber = 0;
-};
-
-const clearAll = () => {
-  display.innerText = "0";
-  secondaryDisplay.innerText = "";
-  firstNumber = 0;
-  secondNumber = 0;
-  operand = null;
-
-  result = 0;
-};
-
-addEventListenerList(keys, "click", getClick);
+equals.addEventListener("click", operate(operand, firstNumber, secondNumber));
