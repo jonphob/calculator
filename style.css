@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Righteous&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Orbitron&display=swap");
 
 /*********************************/
 /* CSS reset with box-sizing fix */
@@ -106,8 +106,7 @@ body {
   align-content: center;
   justify-content: center;
   align-items: center;
-  font-family: "Inter", sans-serif;
-  font-size: 7rem;
+  font-size: 6rem;
 }
 
 .special {

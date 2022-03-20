@@ -9,13 +9,14 @@ const equals = document.querySelector("[data-equals]");
 const display = document.querySelector(".mainDisplay");
 const secondaryDisplay = document.querySelector(".secondaryDisplay");
 const cancelBtn = document.querySelector("[data-cancel]");
-const percentBtn = document.querySelector("[data-percent]");
+const percent = document.querySelector("[data-percent]");
 
 let displayNumber = "";
 let firstNumber;
 let secondNumber;
 let operandSet = false;
 let operand;
+let result;
 
 const appendDisplay = (number) => {
   if (displayNumber.length == 0) {
@@ -35,18 +36,16 @@ const getNumber = (e) => {
 const getOperand = (e) => {
   operand = e.target.getAttribute("data-operand");
   if (!firstNumber) {
-    firstNumber = parseInt(displayNumber);
+    firstNumber = parseFloat(displayNumber);
     console.log(`First Number = ${firstNumber}`);
   }
-  operandSet = true;
   displayNumber = "";
-
   console.log(operand);
 };
 
 const getEquals = () => {
   console.log("Equals clicked");
-  secondNumber = parseInt(displayNumber);
+  secondNumber = parseFloat(displayNumber);
   console.log(`Second Number = ${secondNumber}`);
   result = operate(operand, firstNumber, secondNumber);
   result = Math.round((result + Number.EPSILON) * 1000000000) / 1000000000;
@@ -62,6 +61,21 @@ const clearDisplay = () => {
   firstNumber = null;
   secondNumber = null;
   display.innerText = "0";
+};
+
+const calcPercent = () => {
+  if (!secondNumber) {
+    if (operand === "add" || operand === "subtract") {
+      secondNumber = displayNumber;
+      result = (secondNumber / 100) * firstNumber;
+      display.innerText = result;
+    } else {
+      secondNumber = displayNumber;
+      result = secondNumber / 100;
+      displayNumber = result;
+      display.innerText = result;
+    }
+  }
 };
 
 const operate = (operator, a, b) => {
@@ -96,4 +110,4 @@ operands.forEach((button) => {
 
 cancelBtn.addEventListener("click", clearDisplay);
 
-percentBtn.addEventListener("click", calcPercent);
+percent.addEventListener("click", calcPercent);
