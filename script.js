@@ -68,7 +68,7 @@ const calcPercent = () => {
     if (operand === "add" || operand === "subtract") {
       secondNumber = displayNumber;
       result = (secondNumber / 100) * firstNumber;
-      display.innerText = result;
+      displayNumber = result;
     } else {
       secondNumber = displayNumber;
       result = secondNumber / 100;
