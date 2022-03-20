@@ -123,6 +123,11 @@ body {
   transform: scale(1.05);
 }
 
+.active {
+  background-color: #474747;
+  transform: scale(1.05);
+}
+
 .operand {
   background-color: rgb(217, 147, 32);
 }

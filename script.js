@@ -4,6 +4,7 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 const numbers = document.querySelectorAll("[data-number]");
+const numbersArray = Array.from(numbers);
 const operands = document.querySelectorAll("[data-operand]");
 const equals = document.querySelector("[data-equals]");
 const display = document.querySelector(".mainDisplay");
@@ -34,7 +35,7 @@ const keyArray = [
   "±",
   "Enter",
 ];
-
+console.log(numbersArray);
 let displayNumber = "";
 let firstNumber;
 let secondNumber;
@@ -205,6 +206,14 @@ const keyCodes = () => {
 
       if (key) {
         let keyValue = e.key;
+        let keyInt = parseInt(keyValue);
+        if (keyInt === 0) {
+          keyInt = 10;
+        }
+        numbersArray[keyInt - 1].classList.add("active");
+        setTimeout(() => {
+          numbersArray[keyInt - 1].classList.remove("active");
+        }, 100);
         getNumber(keyValue, true);
       } else {
         switch (e.key) {
