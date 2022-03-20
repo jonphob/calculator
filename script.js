@@ -10,6 +10,7 @@ const display = document.querySelector(".mainDisplay");
 const secondaryDisplay = document.querySelector(".secondaryDisplay");
 const cancelBtn = document.querySelector("[data-cancel]");
 const percent = document.querySelector("[data-percent]");
+const plusMinus = document.querySelector("[data-plus_minus]");
 
 let displayNumber = "";
 let firstNumber;
@@ -17,6 +18,7 @@ let secondNumber;
 let operandSet = false;
 let operand;
 let result;
+let minusSign = false;
 
 const appendDisplay = (number) => {
   if (displayNumber.length == 0) {
@@ -29,6 +31,9 @@ const appendDisplay = (number) => {
 };
 
 const getNumber = (e) => {
+  minusSign ? (minusSign = false) : null;
+  console.log(minusSign);
+
   let value = e.target.getAttribute("data-number");
   appendDisplay(value);
 };
@@ -84,6 +89,24 @@ const calcPercent = () => {
   }
 };
 
+const addPlusMinus = () => {
+  if (displayNumber.length === 0) {
+    return null;
+  }
+
+  if (minusSign) {
+    displayNumber = displayNumber.substring(1);
+    minusSign = false;
+    display.innerText = displayNumber;
+    console.log(minusSign);
+  } else {
+    displayNumber = "-" + displayNumber;
+    display.innerText = displayNumber;
+    minusSign = true;
+    console.log(minusSign);
+  }
+};
+
 const operate = (operator, a, b) => {
   switch (operator) {
     case "add":
@@ -117,3 +140,5 @@ operands.forEach((button) => {
 cancelBtn.addEventListener("click", clearDisplay);
 
 percent.addEventListener("click", calcPercent);
+
+plusMinus.addEventListener("click", addPlusMinus);
