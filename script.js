@@ -12,6 +12,27 @@ const cancelBtn = document.querySelector("[data-cancel]");
 const percent = document.querySelector("[data-percent]");
 const plusMinus = document.querySelector("[data-plus_minus]");
 const decimal = document.querySelector("[data-decimal]");
+const keyArray = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "0",
+  "=",
+  "+",
+  "-",
+  "/",
+  "%",
+  ".",
+  "Escape",
+  "±",
+  "Enter",
+];
 
 let displayNumber = "";
 let firstNumber;
@@ -31,14 +52,25 @@ const appendDisplay = (number) => {
   }
 };
 
-const getNumber = (e) => {
+const getNumber = (e, d = false) => {
   minusSign ? (minusSign = false) : null;
-  let value = e.target.getAttribute("data-number");
-  appendDisplay(value);
+  console.log("e " + e);
+  let value;
+  if (!d) {
+    value = e.target.getAttribute("data-number");
+    appendDisplay(value);
+  } else {
+    value = e;
+    appendDisplay(value);
+  }
 };
 
-const getOperand = (e) => {
-  operand = e.target.getAttribute("data-operand");
+const getOperand = (e, d = false) => {
+  if (!d) {
+    operand = e.target.getAttribute("data-operand");
+  } else {
+    operand = e;
+  }
   if (!firstNumber) {
     firstNumber = parseFloat(displayNumber);
     console.log(`First Number = ${firstNumber}`);
@@ -49,7 +81,6 @@ const getOperand = (e) => {
 };
 
 const getEquals = () => {
-  console.log(result);
   console.log("Equals clicked");
   secondNumber = parseFloat(displayNumber);
   console.log(`Second Number = ${secondNumber}`);
@@ -160,3 +191,58 @@ cancelBtn.addEventListener("click", clearDisplay);
 percent.addEventListener("click", calcPercent);
 plusMinus.addEventListener("click", addPlusMinus);
 decimal.addEventListener("click", addDecimal);
+
+const keyCodes = () => {
+  document.addEventListener("keydown", function (e) {
+    //console.log(e);
+    if (keyArray.includes(e.key)) {
+      const key = isFinite(e.key);
+      console.log("Key is a number:" + key);
+
+      if (key) {
+        console.log(`Key is a number:${key} - ${e.key} ${typeof e.key}`);
+        let keyValue = e.key;
+        console.log(`Key is a number:${key} - ${e.key} ${typeof keyValue}`);
+        getNumber(keyValue, true);
+      } else {
+        console.log(`Key is NOT a number:${key}-${e.key}`);
+        switch (e.key) {
+          case "+":
+            getOperand("add", true);
+            break;
+          case "-":
+            getOperand("subtract", true);
+            break;
+          case "*":
+            getOperand("multiply", true);
+            break;
+          case "/":
+            getOperand("divide", true);
+            break;
+          case "Enter":
+            getEquals("getEquals");
+            break;
+          case "=":
+            getEquals("getEquals");
+          case "%":
+            calcPercent("calcPercent");
+            break;
+          case ".":
+            addDecimal("addDecimal");
+            break;
+          case "±":
+            addPlusMinus("addPlusMinus");
+            break;
+          case "Escape":
+            clearDisplay();
+            break;
+          default:
+            break;
+        }
+      }
+    } else {
+      return null;
+    }
+  });
+};
+keyCodes();
