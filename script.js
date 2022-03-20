@@ -38,10 +38,10 @@ const keyArray = [
 let displayNumber = "";
 let firstNumber;
 let secondNumber;
-let operandSet = false;
 let operand;
 let result;
 let minusSign = false;
+let equalsPressed = false;
 
 const appendDisplay = (number) => {
   if (displayNumber.length == 0) {
@@ -54,8 +54,8 @@ const appendDisplay = (number) => {
 };
 
 const getNumber = (e, d = false) => {
+  equalsPressed = false;
   minusSign ? (minusSign = false) : null;
-  console.log("e " + e);
   let value;
   if (!d) {
     value = e.target.getAttribute("data-number");
@@ -82,6 +82,9 @@ const getOperand = (e, d = false) => {
 };
 
 const getEquals = () => {
+  if (equalsPressed) {
+    return null;
+  }
   console.log("Equals clicked");
   secondNumber = parseFloat(displayNumber);
   console.log(`Second Number = ${secondNumber}`);
@@ -98,6 +101,7 @@ const getEquals = () => {
   displayNumber = "";
   firstNumber = null;
   secondNumber = null;
+  equalsPressed = true;
   enableDecimal();
 };
 
@@ -155,6 +159,11 @@ const addDecimal = () => {
 const enableDecimal = () => {
   decimal.addEventListener("click", addDecimal);
   decimal.classList.remove("disabled");
+};
+
+const enableEquals = () => {
+  equals.addEventListener("click", addDecimal);
+  equals.classList.remove("disabled");
 };
 
 const operate = (operator, a, b) => {
