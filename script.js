@@ -38,7 +38,7 @@ const keyArray = [
   "±",
   "Enter",
 ];
-console.log(otherKeysArray);
+
 let displayNumber = "";
 let firstNumber;
 let secondNumber;
@@ -185,7 +185,6 @@ const operate = (operator, a, b) => {
       } else {
         return divide(a, b);
       }
-
     default:
       break;
   }
@@ -198,34 +197,19 @@ const addActiveOnKeypress = (index, array) => {
   }, 200);
 };
 
-//** Event Listeners **/
-
-numbers.forEach((button) => {
-  button.addEventListener("click", getNumber);
-});
-
-operands.forEach((button) => {
-  button.addEventListener("click", getOperand);
-});
-
-equals.addEventListener("click", getEquals);
-cancelBtn.addEventListener("click", clearDisplay);
-percent.addEventListener("click", calcPercent);
-plusMinus.addEventListener("click", addPlusMinus);
-decimal.addEventListener("click", addDecimal);
-
 const keyCodes = () => {
   document.addEventListener("keydown", function (e) {
-    //console.log(e);
     if (keyArray.includes(e.key)) {
       const key = isFinite(e.key);
 
       if (key) {
         let keyValue = e.key;
         let keyInt = parseInt(keyValue);
+
         if (keyInt === 0) {
           keyInt = 10;
         }
+
         addActiveOnKeypress(keyInt - 1, numbersArray);
 
         getNumber(keyValue, true);
@@ -254,6 +238,7 @@ const keyCodes = () => {
           case "=":
             getEquals("getEquals");
             addActiveOnKeypress(4, otherKeysArray);
+            break;
           case "%":
             calcPercent("calcPercent");
             addActiveOnKeypress(2, otherKeysArray);
@@ -280,3 +265,19 @@ const keyCodes = () => {
   });
 };
 keyCodes();
+
+//** Event Listeners **/
+
+numbers.forEach((button) => {
+  button.addEventListener("click", getNumber);
+});
+
+operands.forEach((button) => {
+  button.addEventListener("click", getOperand);
+});
+
+equals.addEventListener("click", getEquals);
+cancelBtn.addEventListener("click", clearDisplay);
+percent.addEventListener("click", calcPercent);
+plusMinus.addEventListener("click", addPlusMinus);
+decimal.addEventListener("click", addDecimal);
