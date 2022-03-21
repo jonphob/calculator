@@ -96,6 +96,7 @@ const getEquals = () => {
   secondNumber = parseFloat(displayNumber);
   result = operate(operand, firstNumber, secondNumber);
 
+  //to account for divide/0 error message
   if (typeof result === "string") {
     result = result;
   } else {
