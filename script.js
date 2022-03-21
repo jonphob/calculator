@@ -5,6 +5,7 @@ const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 const numbers = document.querySelectorAll("[data-number]");
 const operands = document.querySelectorAll("[data-operand]");
+const otherKeys = document.querySelectorAll(".other");
 const equals = document.querySelector("[data-equals]");
 const display = document.querySelector(".mainDisplay");
 const secondaryDisplay = document.querySelector(".secondaryDisplay");
@@ -14,6 +15,7 @@ const plusMinus = document.querySelector("[data-plus_minus]");
 const decimal = document.querySelector("[data-decimal]");
 const numbersArray = Array.from(numbers);
 const operandsArray = Array.from(operands);
+const otherKeysArray = Array.from(otherKeys);
 const keyArray = [
   "1",
   "2",
@@ -36,7 +38,7 @@ const keyArray = [
   "±",
   "Enter",
 ];
-console.log(operandsArray);
+console.log(otherKeysArray);
 let displayNumber = "";
 let firstNumber;
 let secondNumber;
@@ -189,10 +191,10 @@ const operate = (operator, a, b) => {
   }
 };
 
-const addActiveToOperand = (index) => {
-  operandsArray[index].classList.add("active");
+const addActiveOnKeypress = (index, array) => {
+  array[index].classList.add("active");
   setTimeout(() => {
-    operandsArray[index].classList.remove("active");
+    array[index].classList.remove("active");
   }, 200);
 };
 
@@ -224,45 +226,49 @@ const keyCodes = () => {
         if (keyInt === 0) {
           keyInt = 10;
         }
-        numbersArray[keyInt - 1].classList.add("active");
-        setTimeout(() => {
-          numbersArray[keyInt - 1].classList.remove("active");
-        }, 100);
+        addActiveOnKeypress(keyInt - 1, numbersArray);
+
         getNumber(keyValue, true);
       } else {
         switch (e.key) {
           case "+":
             getOperand("add", true);
-            addActiveToOperand(3);
+            addActiveOnKeypress(3, operandsArray);
             break;
           case "-":
             getOperand("subtract", true);
-            addActiveToOperand(2);
+            addActiveOnKeypress(2, operandsArray);
             break;
           case "*":
             getOperand("multiply", true);
-            addActiveToOperand(1);
+            addActiveOnKeypress(1, operandsArray);
             break;
           case "/":
             getOperand("divide", true);
-            addActiveToOperand(0);
+            addActiveOnKeypress(0, operandsArray);
             break;
           case "Enter":
             getEquals("getEquals");
+            addActiveOnKeypress(4, otherKeysArray);
             break;
           case "=":
             getEquals("getEquals");
+            addActiveOnKeypress(4, otherKeysArray);
           case "%":
             calcPercent("calcPercent");
+            addActiveOnKeypress(2, otherKeysArray);
             break;
           case ".":
             addDecimal("addDecimal");
+            addActiveOnKeypress(3, otherKeysArray);
             break;
           case "±":
             addPlusMinus("addPlusMinus");
+            addActiveOnKeypress(1, otherKeysArray);
             break;
           case "Escape":
             clearDisplay();
+            addActiveOnKeypress(0, otherKeysArray);
             break;
           default:
             break;
