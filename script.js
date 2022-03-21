@@ -43,6 +43,7 @@ let displayNumber = "";
 let firstNumber;
 let secondNumber;
 let operand;
+let newOperand;
 let result;
 let minusSign = false;
 let equalsPressed = true;
@@ -63,27 +64,50 @@ const appendDisplay = (number) => {
   }
 };
 
-const getNumber = (e, d = false) => {
-  equalsPressed = false;
+const getNumber = (keyValue, isKeyPress = false) => {
+  if (equalsPressed) {
+    clearDisplay();
+  }
+
   minusSign ? (minusSign = false) : null;
   let value;
-  if (!d) {
-    value = e.target.getAttribute("data-number");
+
+  if (!isKeyPress) {
+    value = keyValue.target.getAttribute("data-number");
     appendDisplay(value);
   } else {
-    value = e;
+    value = keyValue;
     appendDisplay(value);
   }
 };
 
-const getOperand = (e, d = false) => {
-  if (!d) {
-    operand = e.target.getAttribute("data-operand");
-  } else {
-    operand = e;
+const getOperand = (keyValue, isKeyPress = false) => {
+  if (equalsPressed) {
+    return null;
   }
-  if (!firstNumber) {
-    firstNumber = parseFloat(displayNumber);
+  if (operand) {
+    if (!isKeyPress) {
+      newOperand = keyValue.target.getAttribute("data-operand");
+    } else {
+      newOperand = keyValue;
+    }
+    equalsPressed = false;
+    secondNumber = parseFloat(displayNumber);
+    result = operate(operand, firstNumber, secondNumber);
+    display.innerText = result;
+    firstNumber = result;
+    operand = newOperand;
+    newOperand = null;
+  } else {
+    if (!isKeyPress) {
+      operand = keyValue.target.getAttribute("data-operand");
+    } else {
+      operand = keyValue;
+    }
+
+    if (!firstNumber) {
+      firstNumber = parseFloat(displayNumber);
+    }
   }
   displayNumber = "";
   enableDecimal();
@@ -96,7 +120,7 @@ const getEquals = () => {
   secondNumber = parseFloat(displayNumber);
   result = operate(operand, firstNumber, secondNumber);
 
-  //to account for divide/0 error message
+  //to account for div/0 error message
   if (typeof result === "string") {
     result = result;
   } else {
@@ -117,6 +141,11 @@ const clearDisplay = () => {
   firstNumber = null;
   secondNumber = null;
   display.innerText = "0";
+  operand = null;
+  newOperand = null;
+  result = 0;
+  minusSign = false;
+  equalsPressed = false;
 };
 
 const calcPercent = () => {
