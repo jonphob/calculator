@@ -31,6 +31,10 @@ body {
   line-height: 1;
 }
 
+button {
+  border-color: transparent;
+}
+
 /*************************/
 /******* Styles **********/
 /*************************/
@@ -94,7 +98,7 @@ body {
   row-gap: 20px;
 }
 
-.keys {
+button {
   display: flex;
   width: 130px;
   height: 130px;
@@ -112,29 +116,30 @@ body {
   color: #000;
 }
 
-.keys:hover {
+button:hover {
   background-color: #5c5c5c;
   cursor: pointer;
 }
 
-.keys:active,
+button:active,
 .active {
   background-color: #474747;
   transform: scale(1.05);
   opacity: 0.7;
 }
 
-.operand {
+button:focus-visible {
+  outline: none;
+}
+
+.operator,
+.equals {
   background-color: rgb(217, 147, 32);
 }
 
-.operand:hover {
+.operator:hover,
+.equals:hover {
   background-color: rgb(160, 115, 40, 1);
-}
-
-.operand,
-.special {
-  padding-bottom: 14px;
 }
 
 .percent {
